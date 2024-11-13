@@ -1,6 +1,8 @@
 use std::{
     fs::File,
+    i32,
     io::{BufRead, BufReader},
+    simd::usizex1,
 };
 
 pub struct ReaderConfig {
@@ -29,6 +31,18 @@ impl DataFrame {
             data: data,
             header: header,
         }
+    }
+
+    fn get_by_col(self: &Self, index: i32) -> Vec<String> {
+        let mut res: Vec<String> = vec![];
+        for line in self.data {
+            res.push(line.get(index))
+        }
+        res
+    }
+    fn get_by_colname(self: &Self, colname: &str) {
+        let index = self.header.iter().position(|&x| x == colname);
+        self.get_by_col(index)
     }
 }
 
