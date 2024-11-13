@@ -2,7 +2,6 @@ use std::{
     fs::File,
     i32,
     io::{BufRead, BufReader},
-    simd::usizex1,
 };
 
 pub struct ReaderConfig {
@@ -14,7 +13,7 @@ pub struct ReaderConfig {
 impl Default for ReaderConfig {
     fn default() -> ReaderConfig {
         ReaderConfig {
-            header: 1,
+            header: 0,
             path: "./data.csv".to_string(),
         }
     }
@@ -33,16 +32,17 @@ impl DataFrame {
         }
     }
 
-    fn get_by_col(self: &Self, index: i32) -> Vec<String> {
+    pub fn get_by_col(self: &Self, index: usize) -> Vec<String> {
         let mut res: Vec<String> = vec![];
-        for line in self.data {
-            res.push(line.get(index))
+        for line in self.data.clone() {
+            let s = line.get(index).unwrap();
+            res.push(s.clone())
         }
         res
     }
-    fn get_by_colname(self: &Self, colname: &str) {
-        let index = self.header.iter().position(|&x| x == colname);
-        self.get_by_col(index)
+    pub fn get_by_colname(self: &Self, colname: &str) -> Vec<String> {
+        let index = self.header.iter().position(|x| x == colname);
+        self.get_by_col(index.expect("Index Error").try_into().unwrap())
     }
 }
 
@@ -56,12 +56,11 @@ pub fn data_loader(config: &ReaderConfig) -> DataFrame {
     for (rownumber, line) in buffreader.lines().enumerate() {
         let line = line.unwrap();
         let row: &Vec<String> = &line.split("\t").map(|x| x.to_string()).collect();
-
-        if rownumber == 0 {
+        if rownumber < config.header as usize {
             header = row.clone();
         } else {
             res.push(row.clone());
         }
     }
-    DataFrame::new(header, res)
+    return DataFrame::new(header, res);
 }
