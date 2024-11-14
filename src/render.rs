@@ -34,7 +34,7 @@ impl Render {
             .unwrap()
             .join("*.html");
 
-        let ouput_path = Path::new(&self.config.template)
+        let output_path = Path::new(&self.config.template)
             .canonicalize()
             .unwrap()
             .join("report.html");
@@ -46,8 +46,11 @@ impl Render {
                 ::std::process::exit(1);
             }
         };
-        let render_string = tera.render("index.html", &self.config.context).unwrap();
-        let mut file = fs::File::create(ouput_path).unwrap();
+        let render_string = tera.render("template.html", &self.config.context).unwrap();
+        let mut file = match fs::exists(output_path.as_path()).unwrap() {
+            true => fs::File::open(output_path).unwrap(),
+            false => fs::File::create(output_path).unwrap(),
+        };
         let _ = file.write(render_string.into_bytes().as_slice());
     }
 }
