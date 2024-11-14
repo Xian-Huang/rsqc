@@ -23,6 +23,7 @@ pub struct Render {
     pub config: RenderConfig,
 }
 
+
 impl Render {
     pub fn new(config: RenderConfig) -> Self {
         Render { config }
