@@ -11,11 +11,11 @@ pub struct Args {
     pub number_header: u32,
 
     /// 样本名称列
-    #[arg(short, long, default_value = "sdf")]
+    #[arg(short, long, default_value = "Sample ID")]
     pub sample: String,
 
     /// 浓度列名称
-    #[arg(short, long, default_value = "sdf")]
+    #[arg(short, long, default_value = "Nucleic Acid Conc.")]
     pub ch: String,
 
     ///体积
