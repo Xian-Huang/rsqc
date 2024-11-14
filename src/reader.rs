@@ -13,7 +13,7 @@ pub struct ReaderConfig {
 impl Default for ReaderConfig {
     fn default() -> ReaderConfig {
         ReaderConfig {
-            header: 0,
+            header: 1,
             path: "./data.csv".to_string(),
         }
     }
@@ -47,17 +47,51 @@ impl DataFrame {
         res
     }
     pub fn get_by_colname(self: &Self, colname: &str) -> Vec<String> {
-        let index = self.header.iter().position(|x| x == colname);
+        let index = self.header.iter().position(|x| {
+            dbg!(x);
+            x == colname
+        });
         self.get_by_col(index.expect("Index Error").try_into().unwrap())
     }
 
-    pub fn get_by_colnames(self: &Self, colnames: Vec<String>) {
+    pub fn get_by_colnames(self: &Self, colnames: Vec<String>) -> HashMap<String, Vec<String>> {
         let mut hx: HashMap<String, Vec<String>> = HashMap::new();
         for colname in colnames {
             let col = colname.clone();
             let var_name = colname.as_str();
             hx.insert(col, self.get_by_colname(&var_name));
         }
+        hx
+    }
+
+    pub fn create_table(
+        self: &Self,
+        colnames: Vec<String>,
+        v: f32,
+        note: String,
+    ) -> Vec<Vec<String>> {
+        let mut res: Vec<Vec<String>> = Vec::new();
+        let hx = self.get_by_colnames(colnames);
+        let keys: Vec<&String> = hx.keys().collect();
+        let sample_name = keys.get(0).unwrap();
+        let q_name = keys.get(1).unwrap();
+        for number in 0..self.data.len() {
+            let index = number + 1 as usize;
+            let sample = hx.get(*sample_name).unwrap().get(number).unwrap().clone();
+            let wk = "DNA";
+            let q = hx.get(*q_name).unwrap().get(number).unwrap();
+            let all = q.parse::<f32>().unwrap() * v;
+            res.push(vec![
+                index.to_string(),
+                sample.clone(),
+                wk.to_string(),
+                q.clone(),
+                v.to_string(),
+                all.to_string(),
+                note.clone(),
+            ]);
+        }
+        res
     }
 }
 pub fn data_loader(config: &ReaderConfig) -> DataFrame {

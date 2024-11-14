@@ -33,4 +33,8 @@ pub struct Args {
     /// 模板位置
     #[arg(short, long, default_value = "./")]
     pub output_path: String,
+
+    /// note 是否合格
+    #[arg(short, long, default_value = "合格")]
+    pub note: String,
 }

@@ -16,7 +16,7 @@ fn main() {
     let images = load_images(Path::new(&args.images));
     let product = Source {
         time: get_time(),
-        table: df.data,
+        table: df.create_table(vec![args.sample, args.ch], args.volume, args.note),
         images: images,
     };
     let render_config = RenderConfig {

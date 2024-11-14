@@ -35,7 +35,20 @@ mod test {
     }
 
     #[test]
-    fn get_tiem_test() {
+    fn get_item_test() {
         get_time();
+    }
+
+    #[test]
+    fn get_table_test() {
+        let readercfg = ReaderConfig::default();
+        let df = data_loader(&readercfg);
+
+        let table = df.create_table(
+            vec!["Sample ID".to_string(), "Nucleic Acid Conc.".to_string()],
+            40.,
+            "合格".to_string(),
+        );
+        dbg!(table);
     }
 }
