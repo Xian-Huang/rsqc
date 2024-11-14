@@ -60,10 +60,19 @@ pub fn load_images(path: &Path) -> Vec<String> {
     for file in read_dir(path).unwrap() {
         let file = file.unwrap();
         let filepath = file.path();
+        dbg!(&filepath);
         if filepath.as_path().to_str().unwrap().ends_with(".png")
             || filepath.as_path().to_str().unwrap().ends_with(".jpg")
         {
-            res.push(filepath.to_str().unwrap().to_string());
+            let new_path = filepath
+                .canonicalize()
+                .unwrap()
+                .as_path()
+                .to_str()
+                .unwrap()
+                .replace("\\\\?\\", "")
+                .replace("\\", "/");
+            res.push(format!("file:\\{}", new_path));
         }
     }
     res
