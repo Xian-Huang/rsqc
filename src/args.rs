@@ -4,25 +4,25 @@ use clap::Parser;
 pub struct Args {
     /// 数据位置
     #[arg(short, long)]
-    data: String,
+    pub data: String,
 
     /// 表头行数
     #[arg(short, long, default_value = "0")]
-    number_header: u32,
+    pub number_header: u32,
 
     /// 样本名称列
     #[arg(short, long, default_value = "sdf")]
-    sample: String,
+    pub sample: String,
 
     /// 浓度列名称
     #[arg(short, long, default_value = "sdf")]
-    ch: String,
+    pub ch: String,
 
     ///体积
     #[arg(short, long)]
-    volume: f32,
+    pub volume: f32,
 
     ///胶图位置
     #[arg(short, long, default_value = "./images")]
-    images: String,
+    pub images: String,
 }

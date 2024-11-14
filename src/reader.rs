@@ -1,12 +1,11 @@
 use std::{
     fs::File,
-    i32,
     io::{BufRead, BufReader},
 };
 
 pub struct ReaderConfig {
     /// header 目前能为1
-    pub header: i32,
+    pub header: u32,
     pub path: String,
 }
 
@@ -16,6 +15,12 @@ impl Default for ReaderConfig {
             header: 0,
             path: "./data.csv".to_string(),
         }
+    }
+}
+
+impl ReaderConfig {
+    pub fn new(header: u32, path: String) -> Self {
+        ReaderConfig { header, path }
     }
 }
 
@@ -45,7 +50,6 @@ impl DataFrame {
         self.get_by_col(index.expect("Index Error").try_into().unwrap())
     }
 }
-
 pub fn data_loader(config: &ReaderConfig) -> DataFrame {
     let file = File::open(config.path.to_string()).expect("文件未找到！");
     let buffreader = BufReader::new(file);
