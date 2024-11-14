@@ -1,4 +1,5 @@
 use std::{
+    collections::HashMap,
     fs::File,
     io::{BufRead, BufReader},
 };
@@ -48,6 +49,15 @@ impl DataFrame {
     pub fn get_by_colname(self: &Self, colname: &str) -> Vec<String> {
         let index = self.header.iter().position(|x| x == colname);
         self.get_by_col(index.expect("Index Error").try_into().unwrap())
+    }
+
+    pub fn get_by_colnames(self: &Self, colnames: Vec<String>) {
+        let mut hx: HashMap<String, Vec<String>> = HashMap::new();
+        for colname in colnames {
+            let col = colname.clone();
+            let var_name = colname.as_str();
+            hx.insert(col, self.get_by_colname(&var_name));
+        }
     }
 }
 pub fn data_loader(config: &ReaderConfig) -> DataFrame {
