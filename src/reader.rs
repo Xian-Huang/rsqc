@@ -47,10 +47,7 @@ impl DataFrame {
         res
     }
     pub fn get_by_colname(self: &Self, colname: &str) -> Vec<String> {
-        let index = self.header.iter().position(|x| {
-            dbg!(x);
-            x == colname
-        });
+        let index = self.header.iter().position(|x| x == colname);
         self.get_by_col(index.expect("Index Error").try_into().unwrap())
     }
 
@@ -72,9 +69,10 @@ impl DataFrame {
     ) -> Vec<Vec<String>> {
         let mut res: Vec<Vec<String>> = Vec::new();
         let hx = self.get_by_colnames(colnames);
-        let keys: Vec<&String> = hx.keys().collect();
-        let sample_name = keys.get(0).unwrap();
-        let q_name = keys.get(1).unwrap();
+        let mut keys: Vec<&String> = hx.keys().collect();
+        keys.sort(); //确定顺序
+        let sample_name = keys.get(1).unwrap();
+        let q_name = keys.get(0).unwrap();
         for number in 0..self.data.len() {
             let index = number + 1 as usize;
             let sample = hx.get(*sample_name).unwrap().get(number).unwrap().clone();
