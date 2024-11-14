@@ -7,7 +7,7 @@ pub struct Args {
     pub data: String,
 
     /// 表头行数
-    #[arg(short, long, default_value = "0")]
+    #[arg(short, long, default_value = "1")]
     pub number_header: u32,
 
     /// 样本名称列
@@ -25,4 +25,12 @@ pub struct Args {
     ///胶图位置
     #[arg(short, long, default_value = "./images")]
     pub images: String,
+
+    /// 模板位置
+    #[arg(short, long, default_value = "./template")]
+    pub template: String,
+
+    /// 模板位置
+    #[arg(short, long, default_value = "./")]
+    pub output_path: String,
 }
