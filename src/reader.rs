@@ -68,7 +68,7 @@ impl DataFrame {
         self: &Self,
         colnames: Vec<String>,
         v: f32,
-        note: String,
+        result: String,
     ) -> Vec<Vec<String>> {
         let mut res: Vec<Vec<String>> = Vec::new();
         let hx = self.get_by_colnames(colnames);
@@ -88,7 +88,7 @@ impl DataFrame {
                 q.clone(),
                 v.to_string(),
                 all.to_string(),
-                note.clone(),
+                result.clone(),
             ]);
         }
         res

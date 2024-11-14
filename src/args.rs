@@ -34,7 +34,7 @@ pub struct Args {
     #[arg(short, long, default_value = "./")]
     pub output_path: String,
 
-    /// note 是否合格
+    /// result 是否合格
     #[arg(short, long, default_value = "合格")]
-    pub note: String,
+    pub result: String,
 }
