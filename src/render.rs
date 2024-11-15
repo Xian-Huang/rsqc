@@ -47,10 +47,7 @@ impl Render {
             }
         };
         let render_string = tera.render("template.html", &self.config.context).unwrap();
-        let mut file = match fs::exists(output_path.as_path()).unwrap() {
-            true => fs::File::open(output_path).unwrap(),
-            false => fs::File::create(output_path).unwrap(),
-        };
+        let mut file = fs::File::create(output_path).unwrap();
         let _ = file.write(render_string.into_bytes().as_slice());
     }
 }
