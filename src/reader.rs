@@ -41,14 +41,20 @@ impl DataFrame {
     pub fn get_by_col(self: &Self, index: usize) -> Vec<String> {
         let mut res: Vec<String> = vec![];
         for line in self.data.clone() {
-            let s = line.get(index).unwrap();
+            let s = line
+                .get(index)
+                .expect(format!("未找到{}位置表头！", index).as_str());
             res.push(s.clone())
         }
         res
     }
     pub fn get_by_colname(self: &Self, colname: &str) -> Vec<String> {
-        let index = self.header.iter().position(|x| x == colname);
-        self.get_by_col(index.expect("Index Error").try_into().unwrap())
+        let index = self
+            .header
+            .iter()
+            .position(|x| x == colname)
+            .expect(format!("未发现colename={}", colname).as_str());
+        self.get_by_col(index.try_into().unwrap())
     }
 
     pub fn get_by_colnames(self: &Self, colnames: Vec<String>) -> HashMap<String, Vec<String>> {
@@ -93,7 +99,8 @@ impl DataFrame {
     }
 }
 pub fn data_loader(config: &ReaderConfig) -> DataFrame {
-    let file = File::open(config.path.to_string()).expect("文件未找到！");
+    let file =
+        File::open(config.path.to_string()).expect("数据文件未找到，请检查文件是否存在！--Data");
     let buffreader = BufReader::new(file);
 
     let mut res: Vec<Vec<String>> = vec![];

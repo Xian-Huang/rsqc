@@ -42,12 +42,17 @@ impl Render {
         let tera = match Tera::new(tempale_path.as_path().to_str().unwrap()) {
             Ok(t) => t,
             Err(e) => {
-                println!("Parsing error(s): {}", e);
+                println!("构建Tera Teamplte Env 错误！: {}", e);
                 ::std::process::exit(1);
             }
         };
-        let render_string = tera.render("template.html", &self.config.context).unwrap();
-        let mut file = fs::File::create(output_path).unwrap();
+        let render_string = tera
+            .render("template.html", &self.config.context)
+            .expect(format!("未找到模板文件template.html").as_str());
+        let mut file = fs::File::create(output_path).expect(
+            format!("创建report.html失败， 请检查权限以及文件是否正在运行，若正在运行，请关闭！")
+                .as_str(),
+        );
         let _ = file.write(render_string.into_bytes().as_slice());
     }
 }
