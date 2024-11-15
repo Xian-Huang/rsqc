@@ -69,30 +69,46 @@ impl DataFrame {
 
     pub fn create_table(
         self: &Self,
-        colnames: Vec<String>,
+        sample_name: &String,
+        q_name: &String,
+        v_name: &String,
+        res_name: &String,
         v: f32,
         result: String,
         wk: String,
     ) -> Vec<Vec<String>> {
         let mut res: Vec<Vec<String>> = Vec::new();
+        let mut colnames: Vec<String> = vec![
+            sample_name.clone(),
+            q_name.clone(),
+            v_name.clone(),
+            res_name.clone(),
+        ];
+        colnames.retain(|x| x.len() != 0);
         let hx = self.get_by_colnames(colnames);
         let mut keys: Vec<&String> = hx.keys().collect();
         keys.sort(); //确定顺序
-        let sample_name = keys.get(1).unwrap();
-        let q_name = keys.get(0).unwrap();
         for number in 0..self.data.len() {
             let index = number + 1 as usize;
-            let sample = hx.get(*sample_name).unwrap().get(number).unwrap().clone();
-            let q = hx.get(*q_name).unwrap().get(number).unwrap();
+            let sample = hx.get(sample_name).unwrap().get(number).unwrap().clone();
+            let q = hx.get(q_name).unwrap().get(number).unwrap();
+            let cv: String = match hx.contains_key(v_name) {
+                true => hx.get(v_name).unwrap().get(number).unwrap().clone(),
+                false => v.to_string(),
+            };
+            let cresult: String = match hx.contains_key(res_name) {
+                true => hx.get(res_name).unwrap().get(number).unwrap().clone(),
+                false => result.clone(),
+            };
             let all = q.parse::<f32>().unwrap() * v / 1000.;
             res.push(vec![
                 index.to_string(),
                 sample.clone(),
                 wk.clone(),
                 q.clone(),
-                v.to_string(),
+                cv,
                 all.to_string(),
-                result.clone(),
+                cresult,
             ]);
         }
         res

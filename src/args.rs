@@ -22,6 +22,10 @@ pub struct Args {
     #[arg(short, long)]
     pub volume: f32,
 
+    ///体积列名称 此参数存在时 -v/volume无效
+    #[arg(long, default_value = "")]
+    pub volume_name: String,
+
     ///胶图位置
     #[arg(short, long, default_value = "./images")]
     pub images: String,
@@ -38,6 +42,10 @@ pub struct Args {
     #[arg(short, long, default_value = "DNA")]
     pub wk: String,
 
+    /// 结论列名称
+    #[arg(long, default_value = "合格")]
+    pub res_name: String,
+    
     /// result 是否合格
     #[arg(short, long, default_value = "合格")]
     pub result: String,

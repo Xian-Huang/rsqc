@@ -17,7 +17,10 @@ fn main() {
     let product = Source {
         time: get_time(),
         table: df.create_table(
-            vec![args.sample, args.ch],
+            &args.sample,
+            &args.ch,
+            &args.volume_name,
+            &args.res_name,
             args.volume,
             args.result,
             args.wk,
