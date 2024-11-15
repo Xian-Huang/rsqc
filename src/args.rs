@@ -34,6 +34,10 @@ pub struct Args {
     #[arg(short, long, default_value = "./")]
     pub output_path: String,
 
+    /// 文库类型
+    #[arg(short, long, default_value = "DNA")]
+    pub wk: String,
+
     /// result 是否合格
     #[arg(short, long, default_value = "合格")]
     pub result: String,

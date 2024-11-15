@@ -66,6 +66,7 @@ impl DataFrame {
         colnames: Vec<String>,
         v: f32,
         result: String,
+        wk: String,
     ) -> Vec<Vec<String>> {
         let mut res: Vec<Vec<String>> = Vec::new();
         let hx = self.get_by_colnames(colnames);
@@ -76,13 +77,12 @@ impl DataFrame {
         for number in 0..self.data.len() {
             let index = number + 1 as usize;
             let sample = hx.get(*sample_name).unwrap().get(number).unwrap().clone();
-            let wk = "DNA";
             let q = hx.get(*q_name).unwrap().get(number).unwrap();
-            let all = q.parse::<f32>().unwrap() * v;
+            let all = q.parse::<f32>().unwrap() * v / 1000.;
             res.push(vec![
                 index.to_string(),
                 sample.clone(),
-                wk.to_string(),
+                wk.clone(),
                 q.clone(),
                 v.to_string(),
                 all.to_string(),
